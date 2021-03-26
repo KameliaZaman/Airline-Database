@@ -1,0 +1,45 @@
+-- stored function - Tina Soh 
+select * from points;
+DELIMITER $$
+CREATE FUNCTION CustomerLevel(
+	points_total INT
+) 
+RETURNS VARCHAR(20)
+DETERMINISTIC
+BEGIN
+    DECLARE customerLevel VARCHAR(20);
+    IF points_total > 20000 THEN
+		SET customerLevel = 'GOLD';
+    ELSEIF (points_total >= 1001 AND 
+			points_total <= 20000) THEN
+        SET customerLevel = 'SILVER';
+    ELSEIF (points_total < 1001 AND
+			points_total >0) THEN
+        SET customerLevel = 'BRONZE';
+         ELSEIF points_total = 0 THEN
+        SET customerLevel = 'NA';
+    END IF;
+	-- return the customer level
+	RETURN (customerLevel);
+END$$
+DELIMITER ;
+SELECT 
+    client_id, 
+    customerLevel(points_total)
+FROM
+    points
+ORDER BY 
+    client_id;
+    
+drop function customerlevel;
+    
+select * from aircraft;
+-- stored procedure - Tina Soh
+DELIMITER //
+CREATE PROCEDURE GetAircraftModel()
+BEGIN
+SELECT P.flight_id,P.airline,PD.model  FROM flight P
+INNER JOIN Aircraft PD ON P.flight_id=PD.flight_id;
+END //
+DELIMITER ;
+Call GetAircraftModel;
