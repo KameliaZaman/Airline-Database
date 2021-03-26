@@ -1,0 +1,20 @@
+--  View 4 tables -> passenger (client), league (points),  travel class (booking) and airline (flight)
+SELECT first_name, last_name, booking.league, travel_class, booking.flight_id AS 'flight number', flight.airline 
+FROM client
+JOIN points
+ON client.client_id  =  points.client_id
+JOIN booking 
+ON client.client_id = booking.client_id
+JOIN flight
+ON booking.flight_id = flight.flight_id;
+-- View league with the most passengers 
+SELECT league, COUNT(*)
+FROM points
+GROUP BY league
+HAVING COUNT(*)  > 3 ;
+-- How many passengers each league has
+SELECT league, COUNT(*)
+FROM points
+GROUP BY league
+HAVING COUNT(*)  > 0
+ORDER BY 2 DESC (edited)
