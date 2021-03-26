@@ -1,0 +1,27 @@
+-- UNION
+SELECT
+	client_id,
+    first_name,
+    points_total,
+    'Bronze' AS type
+FROM client
+WHERE points_total < 2000
+UNION
+SELECT
+	client_id,
+    first_name,
+    points_total,
+    'Silver' AS type
+FROM client
+-- WHERE points >= 2000 AND points < 3000
+WHERE points_total BETWEEN 2000 AND 3000
+UNION
+SELECT
+	client_id,
+    first_name,
+    points_total,
+    'Gold' AS type
+FROM client
+WHERE points_total >= 3000
+ORDER BY first_name;
+select * from points;
