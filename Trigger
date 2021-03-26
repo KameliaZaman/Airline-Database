@@ -1,0 +1,30 @@
+-- Trigger
+DROP TRIGGER IF EXISTS before_ins_booking;
+CREATE TRIGGER before_ins_airport
+BEFORE INSERT ON airport
+FOR EACH ROW 
+SET NEW.name = UPPER(NEW.name);
+INSERT INTO airport (airport_id, name, city, country) 
+VALUES('AQ11','heg', 'denver', 'Australia');
+select * from airport;
+SET GLOBAL event_scheduler = ON;
+CREATE TABLE messages (
+    client_id INT PRIMARY KEY,
+    message VARCHAR(45) NOT NULL,
+    created_at DATETIME NOT NULL
+);
+CREATE EVENT IF NOT EXISTS test_event_01
+ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 1 MINUTE
+ON COMPLETION PRESERVE
+DO
+  INSERT INTO messages(message,created_at)
+  VALUES('Test MySQL Event 1',NOW());
+  
+CREATE EVENT test_event_03
+ON SCHEDULE EVERY 1 MINUTE
+STARTS CURRENT_TIMESTAMP
+ENDS CURRENT_TIMESTAMP + INTERVAL 1 HOUR
+DO
+   INSERT INTO messages(message,created_at)
+   VALUES('Test MySQL recurring Event',NOW());
+SELECT * FROM messages;
