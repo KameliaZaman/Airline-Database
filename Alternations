@@ -1,0 +1,53 @@
+-- ALTERATIONS
+-- Client
+ALTER TABLE client
+ADD CONSTRAINT
+fk_points_total
+FOREIGN KEY (points_total) 
+REFERENCES points(points_total);
+-- Points
+ALTER TABLE points
+ADD CONSTRAINT
+fk_client_id
+FOREIGN KEY (client_id)
+REFERENCES client (client_id);
+-- Booking
+ALTER TABLE booking
+ADD CONSTRAINT
+fk_client_id1
+FOREIGN KEY (client_id)
+REFERENCES client (client_id);
+ALTER TABLE booking
+ADD CONSTRAINT
+fk_flight_id
+FOREIGN KEY (flight_id)
+REFERENCES flight (flight_id);
+ALTER TABLE booking
+ADD CONSTRAINT
+fk_points_total1
+FOREIGN KEY (points_total)
+REFERENCES points (points_total);
+-- Aircraft
+ALTER TABLE aircraft
+ADD CONSTRAINT
+fk_flight_id1
+FOREIGN KEY (flight_id)
+REFERENCES flight (flight_id);
+-- Flight
+ALTER TABLE flight
+ADD CONSTRAINT
+fk_schedule_id
+FOREIGN KEY (schedule_id)
+REFERENCES schedule (schedule_id);
+-- *does not work*
+-- ALTER TABLE flight
+-- ADD CONSTRAINT
+-- fk_airport_id1
+-- FOREIGN KEY (airport_id)
+-- REFERENCES airport(airport_id);
+-- Seat
+ALTER TABLE seat
+ADD	CONSTRAINT
+fk_seat_id
+FOREIGN KEY (seat_id)
+REFERENCES booking (seat_id);
