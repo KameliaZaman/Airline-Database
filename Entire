@@ -1,0 +1,366 @@
+drop DATABASE G2Airline;
+CREATE DATABASE G2Airline;
+USE G2Airline;
+CREATE TABLE client (
+    client_id VARCHAR(20) NOT NULL,
+    first_name VARCHAR(20) NOT NULL,
+    mid_name VARCHAR(20) NULL,
+    last_name VARCHAR(20) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    email VARCHAR(40) NOT NULL,
+    passport VARCHAR(10) NOT NULL,
+	points_total INT NULL,
+    CONSTRAINT
+	pk_client_id
+	PRIMARY KEY
+	(client_id)
+);
+INSERT INTO  client
+(client_id, first_name, mid_name, last_name, phone, email,passport,points_total) 
+VALUES 
+('11', 'TINA','', 'SOH', '07745970820', 'tinasohh@gmail.com', 'LM121844',0),
+('21', 'JACK','KENTA', 'ADACHI', '07834958372',  'jackadachi@gmail.com', 'LM221844',2),
+('31',  'LIZZIE','MATILDA', 'STRAHAN', '07756473859', 'lizziestrahan@live.com','LM221444',1000),
+('41', 'MARGIE','KEN', 'ZHOU', '07748395736','margiezhou@hotmail.com','LM231444',3000),
+('51','LIV', 'HENNA', 'WAELDE', '07756472859','livhenna@live.com', 'LM121843',30000),
+('61', 'GRACE', 'VICTORIA', 'HAILES', '07756784938','gracehailes@gmail.com','LM321444',66),
+('71', 'HUGO','MASON', 'FRY','07758675847', 'hugofry@gmail.com','LM371444',533),
+('81',  'EVA','FOR', 'GUERRERO','07756473857','evaguerrero@yahoo.com','LM771444',60000),
+('91', 'BEN','IDORM', 'HUGHES', '07756473857','benhughes@live.com','LM371494',544),
+('101', 'OLLIE','TREVOR', 'POOLE', '07789876574' ,'olliepoole@hotmail.com','LF371444',3);
+CREATE TABLE points (
+    client_id VARCHAR(20) NOT NULL,
+    points_total INT NOT NULL,
+    league VARCHAR(20) NULL,
+    CONSTRAINT
+	pk_points_total
+	PRIMARY KEY
+	(points_total)
+);
+INSERT INTO points
+(client_id, points_total, league)
+VALUES
+('11',0 , ''),
+('21', 2, 'BRONZE'),
+('31',  1000 ,'BRONZE'),
+('41', 3000,'SILVER'),
+('51',30000, 'GOLD'),
+('61', 66,'BRONZE'),
+('71', 533,'BRONZE'),
+('81',  60000,'GOLD'),
+('91', 544,'BRONZE'),
+('101', 3,'BRONZE');
+CREATE TABLE aircraft (
+    aircraft_id INT NOT NULL,
+    flight_id VARCHAR(40) NOT NULL,
+    model VARCHAR(20) NOT NULL,
+    CONSTRAINT
+	pk_aircraft_id
+	PRIMARY KEY
+	(aircraft_id)
+);
+INSERT INTO aircraft
+(aircraft_id, flight_id, model)
+VALUES
+('111', 'BD98' , 'BOEING747'),
+('211', 'UD54', 'BOEING747'),
+('311', 'US45' ,'AIRBUSA380'),
+('411', 'UK21','AIRBUSA380'),
+('511','G4529', 'BOEING767'),
+('611', 'G4154','BOEING767'),
+('711', 'G4155','BOEING747'),
+('811', 'HA48','BOEING747'),
+('911', 'AA1522','BOEING767'),
+('1011', 'WN380','AIRBUSA380');
+CREATE TABLE Schedule (
+    SCHEDULE_ID INT NOT NULL,
+    ORIGIN_AIRPORT VARCHAR(50) NOT NULL,
+    DESTINATION_AIRPORT VARCHAR(50) NOT NULL,
+    DEPATURE_DATE DATE NOT NULL,
+    ARRIVAL_DATE DATE NOT NULL,
+    DEPATURE_TIME TIME(0) NOT NULL,
+    ARRIVAL_TIME TIME(0) NOT NULL,
+    CONSTRAINT
+	pk_schedule_id
+	PRIMARY KEY
+	(schedule_id)
+);
+INSERT INTO Schedule
+(SCHEDULE_ID, ORIGIN_AIRPORT, DESTINATION_AIRPORT, DEPATURE_DATE, ARRIVAL_DATE, DEPATURE_TIME, ARRIVAL_TIME)
+VALUES
+(1, 'LHR', 'MMIA', '2021-03-19', '2021-03-09', '09:27:00', '09:21:00'),
+(2, 'HAM', 'SYD', '2021-03-09', '2021-05-09', '09:13:00', '09:33:00'),
+(3, 'LAX', 'HAM', '2021-03-10', '2021-02-09', '09:10:00', '09:10:00'),
+(4, 'JFK', 'LAX', '2021-03-08', '2021-06-09', '09:10:00', '09:17:00'),
+(5, 'JFK', 'LHR', '2021-03-04', '2021-03-09', '09:10:00', '09:10:00'),
+(6, 'SYD', 'PEK', '2021-03-09', '2021-12-09', '09:10:00', '09:10:00'),
+(7, 'CDG', 'MRU', '2021-04-09', '2021-03-09', '09:13:00', '09:18:00'),
+(8, 'MEX', 'CDG', '2021-03-09', '2021-03-22', '09:10:00', '09:10:00'),
+(9, 'PEK', 'MMIA', '2021-03-09', '2021-03-31', '09:11:00', '09:20:00'),
+(10, 'MMIA', 'MRU', '2021-03-09', '2021-03-20', '09:11:00', '09:13:00');
+drop table booking;
+CREATE TABLE booking (
+    client_id VARCHAR(50) NOT NULL,
+    flight_id VARCHAR(40) NOT NULL,
+    aircraft_id VARCHAR(50) NOT NULL,
+    seat_id VARCHAR(50) NOT NULL,
+    travel_class VARCHAR(50) NOT NULL,
+    points_total INT NOT NULL,
+    league VARCHAR(50) NOT NULL,
+    changedat DATETIME DEFAULT NULL,
+    action VARCHAR(50) DEFAULT NULL,
+	CONSTRAINT pk_seat_id
+	PRIMARY KEY (seat_id)
+);
+INSERT INTO booking
+ (client_id, flight_id, aircraft_id, seat_id, travel_class, points_total, league) 
+VALUES
+ ('11', 'BD98', '56', '111', 'FIRST', 0, '' ), 
+('21', 'UD54', '45', '211', 'BUSINESS', 2, 'BRONZE' ),
+('31', 'US45', '10', '311', 'ECONOMY', 1000, 'SILVER'),
+('41', 'UK21', '123', '411', 'FIRST', 3000, 'BRONZE'),
+('51', 'G4529', '56', '511', 'FIRST', '30000', 'GOLD'), 
+('61', 'G4154', '45', '611', 'BUSINESS', 66, 'BRONZE'),
+('71', 'G4155', '10', '711', 'ECONOMY', 533, 'BRONZE'),
+('81', 'HA48', '123', '811', 'FIRST', 60000, 'GOLD'),
+('91', 'AA1522', '10', '911', 'ECONOMY', 544, 'BRONZE'),
+('101', 'WN380', '123', '1011', 'FIRST', 3, 'BRONZE');
+CREATE TABLE flight (
+    flight_id VARCHAR(45) NOT NULL,
+    airline VARCHAR(45) NOT NULL,
+    schedule_id INT NOT NULL,
+    weekdays BOOLEAN NOT NULL,
+    price DECIMAL(8 , 2 ),
+    CONSTRAINT
+	pk_flight_id
+	PRIMARY KEY
+	(flight_id)
+);
+INSERT INTO flight
+(flight_id, airline, schedule_id, weekdays, price)
+VALUES
+('BD98', 'United', 1, True, 9224.00),
+('UD54', 'Jetblue', 2 ,  True, 9350.00),
+('US45', 'Delta', 3, True, 7645.00),
+('UK21', 'Delta', 4, True, 10296.00),
+('G4529', 'Allegiant', 5, False, 9387.00),
+('G4154', 'Allegiant', 6, false, 8733.00),
+('G4155', 'Allegiant', 7, false, 8592.00),
+('HA48', 'Hawaiian', 8, false, 10350.00),
+('AA1522', 'American', 9, true, 9765.00),
+('WN380', 'Southwest', 10, true, 8763.00);
+CREATE TABLE airport (
+    airport_id VARCHAR(30) NOT NULL,
+    name TEXT NOT NULL,
+    city TEXT NOT NULL,
+    country TEXT NOT NULL,
+    CONSTRAINT
+	pk_airport_id
+	PRIMARY KEY
+	(airport_id)
+);
+INSERT INTO airport (airport_id, name, city, country)
+VALUES ('LN301', 'MMIA', 'Lagos', 'Nigeria'),
+('LE293', 'LHR', 'London', 'England'),
+('HG374', 'HAM', 'Hamburg', 'Germany'),
+('LU090', 'LAX', 'Los Angeles', 'USA'),
+('NU064', 'JFK', 'New York', 'USA'),
+('SA111', 'SYD', 'Sydney', 'Australia'),
+('PF222', 'CDG', 'Paris', 'France'),
+('MM098', 'MRU', 'Mauritius', 'Mauritius'),
+('BC093', 'PEK', 'Beijing', 'China'),
+ ('MC090','MEX', 'Mexico City', 'Mexico');
+ 
+drop table seat;
+ CREATE TABLE seat (
+	seat_id VARCHAR(50) NOT NULL,
+    travel_class VARCHAR(50) NOT NULL,
+    position BOOLEAN NOT NULL			
+);
+INSERT INTO seat (seat_id, travel_class, position) 
+VALUES
+('111', 'FIRST',0), 
+('211', 'BUSINESS',1 ),
+('311', 'ECONOMY', 1),
+('411', 'FIRST', 0),
+('511', 'FIRST', 0), 
+('611', 'BUSINESS', 1),
+('711', 'ECONOMY', 0),
+('811', 'FIRST', 1),
+('911', 'ECONOMY', 0),
+('1011', 'FIRST', 1);
+-- ALTERATIONS
+-- Client
+ALTER TABLE client
+ADD CONSTRAINT
+fk_points_total
+FOREIGN KEY (points_total) 
+REFERENCES points(points_total);
+-- Points
+ALTER TABLE points
+ADD CONSTRAINT
+fk_client_id
+FOREIGN KEY (client_id)
+REFERENCES client (client_id);
+-- Booking
+ALTER TABLE booking
+ADD CONSTRAINT
+fk_client_id1
+FOREIGN KEY (client_id)
+REFERENCES client (client_id);
+ALTER TABLE booking
+ADD CONSTRAINT
+fk_flight_id
+FOREIGN KEY (flight_id)
+REFERENCES flight (flight_id);
+ALTER TABLE booking
+ADD CONSTRAINT
+fk_points_total1
+FOREIGN KEY (points_total)
+REFERENCES points (points_total);
+-- Aircraft
+ALTER TABLE aircraft
+ADD CONSTRAINT
+fk_flight_id1
+FOREIGN KEY (flight_id)
+REFERENCES flight (flight_id);
+-- Flight
+ALTER TABLE flight
+ADD CONSTRAINT
+fk_schedule_id
+FOREIGN KEY (schedule_id)
+REFERENCES schedule (schedule_id);
+-- *does not work*
+-- ALTER TABLE flight
+-- ADD CONSTRAINT
+-- fk_airport_id1
+-- FOREIGN KEY (airport_id)
+-- REFERENCES airport(airport_id);
+-- Seat
+ALTER TABLE seat
+ADD	CONSTRAINT
+fk_seat_id
+FOREIGN KEY (seat_id)
+REFERENCES booking (seat_id);
+-- stored function - Tina Soh 
+select * from points;
+DELIMITER $$
+CREATE FUNCTION CustomerLevel(
+	points_total INT
+) 
+RETURNS VARCHAR(20)
+DETERMINISTIC
+BEGIN
+    DECLARE customerLevel VARCHAR(20);
+    IF points_total > 20000 THEN
+		SET customerLevel = 'GOLD';
+    ELSEIF (points_total >= 1001 AND 
+			points_total <= 20000) THEN
+        SET customerLevel = 'SILVER';
+    ELSEIF (points_total < 1001 AND
+			points_total >0) THEN
+        SET customerLevel = 'BRONZE';
+         ELSEIF points_total = 0 THEN
+        SET customerLevel = 'NA';
+    END IF;
+	-- return the customer level
+	RETURN (customerLevel);
+END$$
+DELIMITER ;
+SELECT 
+    client_id, 
+    customerLevel(points_total)
+FROM
+    points
+ORDER BY 
+    client_id;
+    
+drop function customerlevel;
+    
+select * from aircraft;
+-- stored procedure - Tina Soh
+DELIMITER //
+CREATE PROCEDURE GetAircraftModel()
+BEGIN
+SELECT P.flight_id,P.airline,PD.model  FROM flight P
+INNER JOIN Aircraft PD ON P.flight_id=PD.flight_id;
+END //
+DELIMITER ;
+Call GetAircraftModel;
+-- UNION
+SELECT
+	client_id,
+    first_name,
+    points_total,
+    'Bronze' AS type
+FROM client
+WHERE points_total < 2000
+UNION
+SELECT
+	client_id,
+    first_name,
+    points_total,
+    'Silver' AS type
+FROM client
+-- WHERE points >= 2000 AND points < 3000
+WHERE points_total BETWEEN 2000 AND 3000
+UNION
+SELECT
+	client_id,
+    first_name,
+    points_total,
+    'Gold' AS type
+FROM client
+WHERE points_total >= 3000
+ORDER BY first_name;
+select * from points;
+-- Trigger
+DROP TRIGGER IF EXISTS before_ins_booking;
+CREATE TRIGGER before_ins_airport
+BEFORE INSERT ON airport
+FOR EACH ROW 
+SET NEW.name = UPPER(NEW.name);
+INSERT INTO airport (airport_id, name, city, country) 
+VALUES('AQ11','heg', 'denver', 'Australia');
+select * from airport;
+SET GLOBAL event_scheduler = ON;
+CREATE TABLE messages (
+    client_id INT PRIMARY KEY,
+    message VARCHAR(45) NOT NULL,
+    created_at DATETIME NOT NULL
+);
+CREATE EVENT IF NOT EXISTS test_event_01
+ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 1 MINUTE
+ON COMPLETION PRESERVE
+DO
+  INSERT INTO messages(message,created_at)
+  VALUES('Test MySQL Event 1',NOW());
+  
+CREATE EVENT test_event_03
+ON SCHEDULE EVERY 1 MINUTE
+STARTS CURRENT_TIMESTAMP
+ENDS CURRENT_TIMESTAMP + INTERVAL 1 HOUR
+DO
+   INSERT INTO messages(message,created_at)
+   VALUES('Test MySQL recurring Event',NOW());
+SELECT * FROM messages;
+ --  View 4 tables -> passenger (client), league (points),  travel class (booking) and airline (flight)
+SELECT first_name, last_name, booking.league, travel_class, booking.flight_id AS 'flight number', flight.airline 
+FROM client
+JOIN points
+ON client.client_id  =  points.client_id
+JOIN booking 
+ON client.client_id = booking.client_id
+JOIN flight
+ON booking.flight_id = flight.flight_id;
+-- View league with the most passengers 
+SELECT league, COUNT(*)
+FROM points
+GROUP BY league
+HAVING COUNT(*)  > 3 ;
+-- How many passengers each league has
+SELECT league, COUNT(*)
+FROM points
+GROUP BY league
+HAVING COUNT(*)  > 0
+ORDER BY 2 DESC (edited) 
